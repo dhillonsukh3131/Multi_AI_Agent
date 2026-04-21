@@ -34,14 +34,22 @@ Your API key is a private credential the script uses to request model responses.
 - Generate a new API key.
 - Save it securely and do not share it publicly.
 
-### 3. Add Your API Key to the Code
-Open `ai-agent.py` in a text editor and find:
+### 3. Set Environment Variables (Recommended)
+Set your API key as an environment variable instead of hardcoding it.
 
-```python
-api_key="your-openrouter-key-here"
+```bash
+export OPENROUTER_API_KEY="your-real-key"
 ```
 
-Replace `your-openrouter-key-here` with your real key, keeping quotes intact.
+Optional configuration:
+
+```bash
+export WORKER_MODELS="openrouter/elephant-alpha,minimax/minimax-m2.5:free,google/gemma-4-31b-it:free"
+export JUDGE_MODEL="arcee-ai/trinity-large-preview:free"
+export MAX_RETRIES=2
+export REQUEST_TIMEOUT=30
+export CHAT_LOG_PATH="chat_history.jsonl"
+```
 
 ## Setting Up and Running the Code
 Open Terminal (or Command Prompt / PowerShell on Windows) in the project folder.
@@ -49,7 +57,7 @@ Open Terminal (or Command Prompt / PowerShell on Windows) in the project folder.
 ### Step 1: Install required packages
 
 ```bash
-pip install -r requirement.txt
+pip install -r requirements.txt
 ```
 
 ### Step 2: Run the chatbot
@@ -70,6 +78,8 @@ Python comments begin with `#` and are for humans (ignored by the interpreter).
 - **Model selection:** define `worker_models` and `judge_model`.
 - **Infinite loop:** `while True` keeps the chatbot running until you type `quit` or `exit`.
 - **Gathering answers:** a `for` loop sends your question to each worker model and collects responses.
+- **Reliability:** model calls use retry + timeout settings for better stability.
 - **Synthesis:** worker outputs are combined and sent to the judge model, which returns one final answer.
+- **Logging:** every turn is saved to a JSONL chat log for review.
 
 Enjoy exploring AI!
